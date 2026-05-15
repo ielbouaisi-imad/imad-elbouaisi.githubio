@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imad El Bouaisi – Géographe & SIG</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#C9A96E;--dark:#0D1117;--mid:#161B22;--card:#1C2333;
+  --accent:#4A9E8C;--text:#E6EDF3;--muted:#8B949E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0D1117 0%,#091522 55%,#0D1117 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 55% at 85% 45%,rgba(74,158,140,.13) 0%,transparent 68%),
+    radial-gradient(ellipse 45% 45% at 15% 75%,rgba(201,169,110,.09) 0%,transparent 60%);
+}
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(74,158,140,.038) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,158,140,.038) 1px,transparent 1px);
+  background-size:55px 55px;
+}
+.compass-deco{
+  position:absolute;top:38px;left:55px;width:88px;height:88px;
+  opacity:.16;animation:spin 45s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hero-content{position:relative;z-index:2;text-align:center;padding:40px 24px;animation:up .9s ease both;}
+@keyframes up{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{font-size:.68rem;letter-spacing:.45em;color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,8vw,5.8rem);font-weight:900;line-height:1.02;color:#fff;margin-bottom:4px;}
+.hero h1 em{color:var(--sand);font-style:normal;}
+.hero-role{font-size:.95rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:14px 0 6px;}
+.hero-sub{font-size:.97rem;color:var(--muted);max-width:500px;margin:0 auto 36px;line-height:1.85;}
+.pills{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.pill{
+  background:rgba(74,158,140,.1);border:1px solid rgba(74,158,140,.28);
+  color:var(--text);padding:9px 22px;border-radius:50px;
+  font-size:.82rem;text-decoration:none;transition:all .28s;
+}
+.pill:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-2px);}
+
+.scroll-hint{
+  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  color:var(--muted);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  animation:bob 2.2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* ── LAYOUT ── */
+section{padding:88px 44px;max-width:1200px;margin:0 auto;}
+.lbl{font-size:.65rem;letter-spacing:.42em;color:var(--accent);text-transform:uppercase;font-weight:700;margin-bottom:9px;}
+.ttl{
+  font-family:'Playfair Display',serif;font-size:clamp(1.75rem,3.2vw,2.65rem);
+  font-weight:700;color:#fff;margin-bottom:52px;position:relative;display:inline-block;
+}
+.ttl::after{content:'';position:absolute;bottom:-11px;left:0;width:52px;height:3px;background:var(--sand);}
+.divider{border:none;border-top:1px solid rgba(255,255,255,.06);}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+
+/* ── ABOUT ── */
+.about-p{color:var(--muted);line-height:2;font-size:.95rem;margin-bottom:16px;}
+.about-p strong{color:var(--text);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px;}
+.stat{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:20px 12px;text-align:center;}
+.stat-n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--sand);}
+.stat-l{font-size:.68rem;color:var(--muted);margin-top:3px;letter-spacing:.04em;}
+
+/* ── SKILLS ── */
+.sg{margin-bottom:26px;}
+.sg-t{font-size:.67rem;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-weight:700;}
+.tags{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:6px 15px;border-radius:6px;font-size:.8rem;transition:all .2s;}
+.tag:hover{border-color:var(--accent);color:var(--accent);}
+.tag.g{border-color:rgba(201,169,110,.28);color:var(--sand);background:rgba(201,169,110,.045);}
+.tag.star{border-color:rgba(74,158,140,.4);background:rgba(74,158,140,.07);color:#7dd4c8;}
+
+/* ── MAPS ── */
+.maps-bg{background:var(--mid);padding:88px 0;}
+.maps-inner{max-width:1240px;margin:0 auto;padding:0 44px;}
+.fbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:34px;}
+.fb{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  color:var(--muted);padding:6px 17px;border-radius:50px;font-size:.75rem;
+  cursor:pointer;transition:all .22s;font-family:'Inter',sans-serif;letter-spacing:.04em;
+}
+.fb:hover,.fb.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.mc{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:13px;overflow:hidden;transition:all .38s;cursor:pointer;}
+.mc:hover{transform:translateY(-7px);border-color:rgba(74,158,140,.38);box-shadow:0 18px 48px rgba(0,0,0,.5);}
+.mc.feat{grid-column:span 2;}
+.mc.hide{display:none;}
+
+/* map visual */
+.mv{width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;}
+.mc.feat .mv{aspect-ratio:16/9;}
+.mv::after{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.032) 1px,transparent 1px);
+  background-size:16px 16px;
+}
+.na{position:absolute;top:9px;right:11px;z-index:2;font-size:.64rem;color:rgba(255,255,255,.72);display:flex;flex-direction:column;align-items:center;gap:1px;font-weight:700;}
+.sb{position:absolute;bottom:9px;left:11px;z-index:2;}
+.sl{width:44px;height:2.5px;background:rgba(255,255,255,.55);border-radius:1px;}
+.st{font-size:.5rem;color:rgba(255,255,255,.55);margin-top:2px;}
+.mhov{position:absolute;inset:0;background:rgba(13,17,23,.84);opacity:0;transition:opacity .32s;display:flex;align-items:center;justify-content:center;padding:16px;z-index:3;}
+.mc:hover .mhov{opacity:1;}
+.mhov p{color:rgba(255,255,255,.85);font-size:.8rem;line-height:1.72;text-align:center;}
+.mi{padding:14px 18px;}
+.mt{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:4px;}
+.mn{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:2px;}
+.md{font-size:.75rem;color:var(--muted);}
+
+/* ── TIMELINE ── */
+.tl{position:relative;padding-left:28px;}
+.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),transparent);}
+.ti{position:relative;padding-left:40px;padding-bottom:42px;}
+.ti::before{content:'';position:absolute;left:-5px;top:6px;width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 4px rgba(74,158,140,.18);}
+.ti-d{font-size:.65rem;letter-spacing:.2em;color:var(--sand);text-transform:uppercase;font-weight:700;margin-bottom:5px;}
+.ti-r{font-size:1.02rem;font-weight:700;color:var(--text);margin-bottom:3px;}
+.ti-c{font-size:.8rem;color:var(--accent);margin-bottom:9px;}
+.ti-t{font-size:.85rem;color:var(--muted);line-height:1.85;}
+
+/* ── EDU ── */
+.egrid{display:grid;grid-template-columns:1fr;gap:16px;}
+.ec{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:22px 22px;transition:all .28s;}
+.ec:hover{border-color:rgba(201,169,110,.28);transform:translateY(-3px);}
+.ei{font-size:1.6rem;margin-bottom:10px;}
+.ed{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+.es{font-size:.78rem;color:var(--accent);margin-bottom:5px;}
+.en{font-size:.72rem;color:var(--muted);}
+.badge{display:inline-block;background:rgba(74,158,140,.12);border:1px solid rgba(74,158,140,.3);color:var(--accent);font-size:.62rem;padding:2px 9px;border-radius:50px;margin-top:6px;letter-spacing:.06em;}
+
+/* ── LANG ── */
+.lgrid{display:flex;gap:14px;flex-wrap:wrap;}
+.lc{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:20px 26px;text-align:center;min-width:128px;}
+.ln{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+.ll{font-size:.68rem;color:var(--muted);letter-spacing:.06em;}
+.dots{display:flex;gap:4px;justify-content:center;margin-top:9px;}
+.d{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.1);}
+.d.on{background:var(--accent);}
+.cert{font-size:.6rem;color:var(--sand);margin-top:5px;}
+
+/* ── FOOTER ── */
+footer{background:var(--mid);border-top:1px solid rgba(255,255,255,.06);padding:46px 44px;text-align:center;}
+footer p{color:var(--muted);font-size:.82rem;margin-bottom:5px;}
+footer strong{color:var(--sand);}
+footer a{color:var(--accent);text-decoration:none;}
+
+@media(max-width:900px){
+  .two,.mgrid{grid-template-columns:1fr;}
+  .mc.feat{grid-column:span 1;}
+  .stats{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  section{padding:60px 20px;}
+  .maps-inner{padding:0 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="grid-bg"></div>
+  <div class="compass-deco">
+    <svg viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="48" stroke="#4A9E8C" stroke-width="2"/>
+      <circle cx="50" cy="50" r="38" stroke="#4A9E8C" stroke-width=".5" stroke-dasharray="3 3"/>
+      <polygon points="50,5 54,50 50,46 46,50" fill="#C9A96E"/>
+      <polygon points="50,95 54,50 50,54 46,50" fill="#4A9E8C"/>
+      <polygon points="5,50 50,46 54,50 50,54" fill="#4A9E8C"/>
+      <polygon points="95,50 50,46 54,50 50,54" fill="#4A9E8C"/>
+      <circle cx="50" cy="50" r="4" fill="#fff"/>
+      <text x="50" y="20" text-anchor="middle" fill="#C9A96E" font-size="10" font-family="serif">N</text>
+      <text x="50" y="88" text-anchor="middle" fill="#4A9E8C" font-size="10" font-family="serif">S</text>
+      <text x="85" y="54" text-anchor="middle" fill="#4A9E8C" font-size="10" font-family="serif">E</text>
+      <text x="15" y="54" text-anchor="middle" fill="#4A9E8C" font-size="10" font-family="serif">W</text>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="eyebrow">Géographe · Géomaticien · Data Analyst</p>
+    <h1>Imad <em>El Bouaisi</em></h1>
+    <p class="hero-role">Spécialiste en SIG & Analyse Spatiale</p>
+    <p class="hero-sub">Expert en géomatique et analyse territoriale — modélisation spatiale, cartographie décisionnelle et gestion des bases de données géographiques.<br><span style="color:var(--accent);font-size:.88rem;">Ben Guerir, Marrakech – Maroc</span></p>
+    <div class="pills">
+      <a class="pill" href="tel:+212634338474">📞 +212 6 34 33 84 74</a>
+      <a class="pill" href="mailto:ielbouaisi@gmail.com">✉️ ielbouaisi@gmail.com</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M5 11l5 5 5-5" stroke="#8B949E" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section>
+  <p class="lbl">Profil</p>
+  <h2 class="ttl">À Propos</h2>
+  <div class="two">
+    <div>
+      <p class="about-p">Géographe expert en <strong>Géomatique et Analyse Territoriale</strong>, actuellement en phase de finalisation d'un Master. Maîtrise avancée des outils de modélisation spatiale et de gestion des bases de données géographiques (GIS).</p>
+      <p class="about-p">Expert en <strong>collecte de données terrain</strong> et en production cartographique décisionnelle. Profil bilingue (Français / Anglais B2) capable de mener des analyses techniques et de rédiger des rapports scientifiques de haut niveau.</p>
+      <p class="about-p">Auteur de <strong>+30 productions cartographiques</strong> couvrant la morphologie, l'hydrologie, la végétation, l'environnement et l'aménagement du territoire.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-n">+30</div><div class="stat-l">Cartes produites</div></div>
+        <div class="stat"><div class="stat-n">6+</div><div class="stat-l">Outils SIG</div></div>
+        <div class="stat"><div class="stat-n">3</div><div class="stat-l">Langues</div></div>
+        <div class="stat"><div class="stat-n">M2</div><div class="stat-l">En finalisation</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sg">
+        <div class="sg-t">🛰️ Logiciels SIG</div>
+        <div class="tags">
+          <span class="tag g">QGIS</span>
+          <span class="tag g">ArcGIS</span>
+          <span class="tag g">Google Earth Pro</span>
+          <span class="tag g star">Google Earth Engine</span>
+          <span class="tag g">MapInfo</span>
+        </div>
+      </div>
+      <div class="sg">
+        <div class="sg-t">📊 Analyse Spatiale</div>
+        <div class="tags">
+          <span class="tag">Modélisation spatiale</span>
+          <span class="tag">DEM / MNT</span>
+          <span class="tag">Télédétection</span>
+          <span class="tag">NDVI</span>
+          <span class="tag">Hydrologie</span>
+          <span class="tag">Aspect / Slope</span>
+          <span class="tag">Choroplèthe</span>
+          <span class="tag">Bases de données géo</span>
+        </div>
+      </div>
+      <div class="sg">
+        <div class="sg-t">💼 Compétences</div>
+        <div class="tags">
+          <span class="tag">Collecte terrain</span>
+          <span class="tag">Rapports scientifiques</span>
+          <span class="tag">Excel avancé</span>
+          <span class="tag">Word · PowerPoint</span>
+          <span class="tag">Travail en équipe</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MAPS -->
+<div class="maps-bg">
+  <div class="maps-inner">
+    <p class="lbl">Travaux Cartographiques</p>
+    <h2 class="ttl">Portfolio des Cartes</h2>
+
+    <div class="fbar">
+      <button class="fb on" onclick="fm('all',this)">Tout</button>
+      <button class="fb" onclick="fm('morpho',this)">Morphologie</button>
+      <button class="fb" onclick="fm('hydro',this)">Hydrologie</button>
+      <button class="fb" onclick="fm('vegetation',this)">Végétation</button>
+      <button class="fb" onclick="fm('territoire',this)">Territoire</button>
+      <button class="fb" onclick="fm('environnement',this)">Environnement</button>
+    </div>
+
+    <div class="mgrid">
+
+      <!-- 1 FEAT Slope+Drainage -->
+      <div class="mc feat" data-c="morpho hydro">
+        <div class="mv" style="background:linear-gradient(135deg,#fffacd 0%,#f5c842 25%,#e07b2a 52%,#8b2500 76%,#3d0800 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 10 km</div></div>
+          <div class="mhov"><p>Analyse des pentes du relief avec tracé du réseau hydrographique via MNT — Skhour Rahamna</p></div>
+        </div>
+        <div class="mi"><div class="mt">Morphologie · Hydrologie</div><div class="mn">Carte des pentes & réseau hydrographique</div><div class="md">Pentes 0–40° avec ordres des cours d'eau</div></div>
+      </div>
+
+      <!-- 2 Aspect -->
+      <div class="mc" data-c="morpho">
+        <div class="mv" style="background:conic-gradient(from 0deg,#e53935,#fdd835,#43a047,#1e88e5,#e53935);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 5 km</div></div>
+          <div class="mhov"><p>Orientation des versants : Nord, Sud, Est, Ouest — analyse du rayonnement solaire</p></div>
+        </div>
+        <div class="mi"><div class="mt">Aspect · Rayonnement</div><div class="mn">Orientation des versants (Aspect)</div><div class="md">Classification en 4 expositions cardinales</div></div>
+      </div>
+
+      <!-- 3 NDVI 1 -->
+      <div class="mc" data-c="vegetation">
+        <div class="mv" style="background:linear-gradient(135deg,#c8a96e 12%,#d4d870 32%,#6db56d 58%,#2d7a2d 85%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 10 km</div></div>
+          <div class="mhov"><p>Classification de la couverture végétale : dense, moyenne, faible et sols nus — indice NDVI</p></div>
+        </div>
+        <div class="mi"><div class="mt">Végétation · NDVI</div><div class="mn">Carte de couverture végétale — 1</div><div class="md">Télédétection satellitaire — NDVI</div></div>
+      </div>
+
+      <!-- 4 DEM Elevation -->
+      <div class="mc" data-c="morpho">
+        <div class="mv" style="background:linear-gradient(135deg,#2d7a2d 0%,#7cbb44 20%,#f5e642 40%,#e07b2a 63%,#c0392b 82%,#7b0000 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 50 km</div></div>
+          <div class="mhov"><p>Modèle Numérique de Terrain (MNT) — altitudes de 783m à 3 243m</p></div>
+        </div>
+        <div class="mi"><div class="mt">DEM · Altimétrie</div><div class="mn">Carte altimétrique numérique</div><div class="md">5 classes d'altitude — dégradé colorimétrique</div></div>
+      </div>
+
+      <!-- 5 FEAT Water choropleth -->
+      <div class="mc feat" data-c="territoire environnement">
+        <div class="mv" style="background:linear-gradient(135deg,#e8f4fc 0%,#90cbe9 28%,#4a9bcc 52%,#1a5f8a 78%,#0a2d4a 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 45 km</div></div>
+          <div class="mhov"><p>Taux d'accès à l'eau potable par commune — carte choroplèthe (0% à 99,3%)</p></div>
+        </div>
+        <div class="mi"><div class="mt">Eau Potable · Choroplèthe</div><div class="mn">Taux d'accès à l'eau potable</div><div class="md">Disparité spatiale inter-communes</div></div>
+      </div>
+
+      <!-- 6 Hydrography -->
+      <div class="mc" data-c="hydro">
+        <div class="mv" style="background:linear-gradient(165deg,#c9a96e 0%,#a07840 42%,#5a3d20 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 10 km</div></div>
+          <div class="mhov"><p>Réseau hydrographique avec hiérarchisation des cours d'eau (ordres 1 à 5)</p></div>
+        </div>
+        <div class="mi"><div class="mt">Hydrographie · Réseau</div><div class="mn">Réseau hydrographique</div><div class="md">Hiérarchisation des cours d'eau</div></div>
+      </div>
+
+      <!-- 7 Location -->
+      <div class="mc" data-c="territoire">
+        <div class="mv" style="background:linear-gradient(135deg,#1a3a5c 0%,#2d6a9f 42%,#4a9bcc 70%,#a8d8ea 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 200 km</div></div>
+          <div class="mhov"><p>Carte de localisation multi-niveaux : national → régional → communal</p></div>
+        </div>
+        <div class="mi"><div class="mt">Localisation · Territoire</div><div class="mn">Carte de localisation</div><div class="md">Maroc → Province → Commune</div></div>
+      </div>
+
+      <!-- 8 Land use -->
+      <div class="mc" data-c="vegetation environnement">
+        <div class="mv" style="background:linear-gradient(135deg,#c8a96e 8%,#f9e4b4 28%,#95c96e 55%,#2d7a2d 78%,#1a5f3a 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 8 km</div></div>
+          <div class="mhov"><p>Occupation des sols : eau, sols nus, couverture végétale à densités variées</p></div>
+        </div>
+        <div class="mi"><div class="mt">Occupation du Sol</div><div class="mn">Carte d'occupation des sols</div><div class="md">Sols nus, végétation faible / moyenne / dense</div></div>
+      </div>
+
+      <!-- 9 Protected area -->
+      <div class="mc" data-c="environnement morpho">
+        <div class="mv" style="background:linear-gradient(135deg,#4a8c1c 28%,#8cbf3c 58%,#c9e47c 92%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 2 km</div></div>
+          <div class="mhov"><p>Zone naturelle protégée — périmètre clôturé avec dégradé altimétrique (450–800m)</p></div>
+        </div>
+        <div class="mi"><div class="mt">Environnement · Protection</div><div class="mn">Zone naturelle protégée</div><div class="md">Périmètre clôturé & altitudes</div></div>
+      </div>
+
+      <!-- 10 FEAT Slope large basin -->
+      <div class="mc feat" data-c="morpho">
+        <div class="mv" style="background:linear-gradient(160deg,#0a1628 0%,#1a3a5c 24%,#2d6a9f 52%,#6db5c3 78%,#aee4ec 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 40 km</div></div>
+          <div class="mhov"><p>Carte des pentes du grand bassin versant — de 20° à 60° — analyse morphologique à grande échelle</p></div>
+        </div>
+        <div class="mi"><div class="mt">Morphologie · Grand Bassin</div><div class="mn">Carte des pentes — Grand Bassin</div><div class="md">Pentes en degrés — échelle régionale</div></div>
+      </div>
+
+      <!-- 11 Rainfall -->
+      <div class="mc" data-c="environnement">
+        <div class="mv" style="background:linear-gradient(135deg,#f9f3e0 0%,#b8d9a0 28%,#4aab5c 52%,#1a6b8a 78%,#0a2d4a 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 25 km</div></div>
+          <div class="mhov"><p>Distribution spatiale des précipitations — impact des changements climatiques sur Skhour Rahamna</p></div>
+        </div>
+        <div class="mi"><div class="mt">Climat · Précipitations</div><div class="mn">Carte des précipitations</div><div class="md">Variabilité spatiale des pluies</div></div>
+      </div>
+
+      <!-- 12 Roads & Wells -->
+      <div class="mc" data-c="territoire">
+        <div class="mv" style="background:linear-gradient(135deg,#e8dcc8 0%,#c9b99a 42%,#a09070 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 6 km</div></div>
+          <div class="mhov"><p>Réseau routier national et régional avec localisation des puits d'eau souterraine</p></div>
+        </div>
+        <div class="mi"><div class="mt">Infrastructure · Territoire</div><div class="mn">Réseau routier & puits</div><div class="md">Routes nationales, régionales et puits</div></div>
+      </div>
+
+      <!-- 13 Aspect protected zone -->
+      <div class="mc" data-c="morpho environnement">
+        <div class="mv" style="background:conic-gradient(from 45deg,#e53935 0deg,#fdd835 90deg,#43a047 180deg,#1e88e5 270deg,#e53935 360deg);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 3 km</div></div>
+          <div class="mhov"><p>Orientation des versants de la zone naturelle protégée clôturée</p></div>
+        </div>
+        <div class="mi"><div class="mt">Aspect · Zone Protégée</div><div class="mn">Orientation des versants — Zone protégée</div><div class="md">Exposition N/S/E/O de la réserve</div></div>
+      </div>
+
+      <!-- 14 Topo base map -->
+      <div class="mc" data-c="territoire">
+        <div class="mv" style="background:linear-gradient(135deg,#f5f0e8 0%,#d4c9a8 30%,#a09070 55%,#786050 82%);">
+          <div class="na"><span>N</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 8 km</div></div>
+          <div class="mhov"><p>Fond topographique avec délimitations communales, routes et infrastructures</p></div>
+        </div>
+        <div class="mi"><div class="mt">Topographie · Fond de carte</div><div class="mn">Carte topographique de base</div><div class="md">Fond topo avec limites administratives</div></div>
+      </div>
+
+      <!-- 15 Drainage large basin -->
+      <div class="mc" data-c="hydro">
+        <div class="mv" style="background:linear-gradient(160deg,#c8e6a0 0%,#6db56d 40%,#2d7a2d 72%,#1a4a20 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 40 km</div></div>
+          <div class="mhov"><p>Réseau de drainage du grand bassin versant — cours principaux, secondaires et affluents</p></div>
+        </div>
+        <div class="mi"><div class="mt">Hydrologie · Grand Bassin</div><div class="mn">Réseau de drainage — Grand Bassin</div><div class="md">Cours principaux, secondaires, affluents</div></div>
+      </div>
+
+      <!-- 16 NDVI 2 -->
+      <div class="mc" data-c="vegetation">
+        <div class="mv" style="background:linear-gradient(135deg,#f5e8c0 8%,#c8e890 34%,#5cb85c 64%,#2d6a2d 92%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 4 km</div></div>
+          <div class="mhov"><p>Analyse de la couverture végétale sur une seconde zone d'étude — imagerie satellitaire</p></div>
+        </div>
+        <div class="mi"><div class="mt">Végétation · Zone 2</div><div class="mn">Couverture végétale — Zone 2</div><div class="md">Classification satellitaire</div></div>
+      </div>
+
+      <!-- 17 Region admin -->
+      <div class="mc" data-c="territoire">
+        <div class="mv" style="background:linear-gradient(135deg,#f4a261 0%,#e76f51 40%,#c44536 70%,#8b1a1a 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 100 km</div></div>
+          <div class="mhov"><p>Carte de la province et des communes limitrophes — délimitations administratives</p></div>
+        </div>
+        <div class="mi"><div class="mt">Territoire · Province</div><div class="mn">Carte provinciale</div><div class="md">Communes et limites administratives</div></div>
+      </div>
+
+      <!-- 18 FEAT Elevation large -->
+      <div class="mc feat" data-c="morpho">
+        <div class="mv" style="background:linear-gradient(160deg,#2d7a2d 0%,#7cbb44 17%,#f5e642 36%,#f5a742 51%,#e07b2a 65%,#c0392b 80%,#7b0000 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 50 km</div></div>
+          <div class="mhov"><p>Carte altimétrique du grand bassin versant — 5 classes de 783m à 3 243m</p></div>
+        </div>
+        <div class="mi"><div class="mt">Altimétrie · Grand Bassin</div><div class="mn">Carte altimétrique — Grand Bassin</div><div class="md">De 783m à 3 243m — modélisation numérique</div></div>
+      </div>
+
+      <!-- 19 Soil erosion -->
+      <div class="mc" data-c="environnement morpho">
+        <div class="mv" style="background:linear-gradient(135deg,#8b4513 0%,#c8701a 34%,#e8a840 65%,#f5d28c 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 15 km</div></div>
+          <div class="mhov"><p>Analyse du risque d'érosion hydrique et de dégradation des sols</p></div>
+        </div>
+        <div class="mi"><div class="mt">Environnement · Érosion</div><div class="mn">Carte du risque d'érosion</div><div class="md">Évaluation de la dégradation des sols</div></div>
+      </div>
+
+      <!-- 20 Population density -->
+      <div class="mc" data-c="territoire">
+        <div class="mv" style="background:linear-gradient(135deg,#fff9e6 0%,#f7c96e 34%,#e07b2a 64%,#7b1a00 100%);">
+          <div class="na"><span>ش</span>▲</div><div class="sb"><div class="sl"></div><div class="st">0 – 30 km</div></div>
+          <div class="mhov"><p>Carte choroplèthe de la densité de population inter-communes</p></div>
+        </div>
+        <div class="mi"><div class="mt">Population · Choroplèthe</div><div class="mn">Densité de population</div><div class="md">Répartition démographique inter-communes</div></div>
+      </div>
+
+    </div><!-- /mgrid -->
+
+    <p style="text-align:center;margin-top:32px;color:var(--muted);font-size:.83rem;">
+      Sélection représentative — <strong style="color:var(--sand)">+30 productions cartographiques</strong> réalisées
+    </p>
+  </div>
+</div>
+
+<!-- EXPERIENCE + FORMATION -->
+<section>
+  <p class="lbl">Parcours</p>
+  <h2 class="ttl">Expérience & Formation</h2>
+  <div class="two">
+
+    <!-- Timeline -->
+    <div>
+      <div class="tl">
+        <div class="ti">
+          <div class="ti-d">Terrain · SIG</div>
+          <div class="ti-r">Enquêteur de Terrain & Analyste SIG</div>
+          <div class="ti-c">Études Urbaines — Ben Guerir</div>
+          <div class="ti-t">Collecte et analyse de données territoriales pour des projets de rénovation urbaine. Contribution active à l'élaboration de diagnostics spatiaux et socio-économiques.</div>
+        </div>
+        <div class="ti">
+          <div class="ti-d">Commercial</div>
+          <div class="ti-r">Agent Commercial de Terrain</div>
+          <div class="ti-c">Matrix Group International</div>
+          <div class="ti-t">Prospection stratégique et développement de relations commerciales. Analyse de terrain pour l'optimisation des ventes et de la communication client.</div>
+        </div>
+        <div class="ti">
+          <div class="ti-d">Recherche · Mémoire</div>
+          <div class="ti-r">Chercheur — Mémoire de Master</div>
+          <div class="ti-c">Université Cadi Ayyad — Marrakech</div>
+          <div class="ti-t">Analyse spatiale avancée et modélisation SIG — Dynamique et gestion des bassins versants et de l'espace littoral au Maroc.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formation + Langues -->
+    <div>
+      <div class="egrid">
+        <div class="ec">
+          <div class="ei">🎓</div>
+          <div class="ed">Master en Géographie</div>
+          <div class="es">Université Cadi Ayyad — Marrakech</div>
+          <div class="en">Dynamique et gestion des bassins versants & espaces littoraux au Maroc</div>
+          <span class="badge">En cours de finalisation</span>
+        </div>
+        <div class="ec">
+          <div class="ei">📘</div>
+          <div class="ed">Licence en Géographie</div>
+          <div class="es">Université Cadi Ayyad</div>
+          <div class="en">Mention : Assez Bien · Projet : Impact des changements climatiques — Skhour Rahamna</div>
+        </div>
+        <div class="ec">
+          <div class="ei">📚</div>
+          <div class="ed">Baccalauréat Sciences Humaines</div>
+          <div class="es">Lycée Skhour Rahamna</div>
+          <div class="en">Spécialité Sciences Humaines</div>
+        </div>
+      </div>
+
+      <div style="margin-top:34px;">
+        <p class="lbl" style="margin-bottom:13px;">Langues</p>
+        <div class="lgrid">
+          <div class="lc">
+            <div class="ln">العربية</div>
+            <div class="ll">Langue maternelle</div>
+            <div class="dots"><div class="d on"></div><div class="d on"></div><div class="d on"></div><div class="d on"></div><div class="d on"></div></div>
+          </div>
+          <div class="lc">
+            <div class="ln">Français</div>
+            <div class="ll">Niveau B2</div>
+            <div class="dots"><div class="d on"></div><div class="d on"></div><div class="d on"></div><div class="d on"></div><div class="d"></div></div>
+            <div class="cert">Maîtrise professionnelle</div>
+          </div>
+          <div class="lc">
+            <div class="ln">English</div>
+            <div class="ll">Niveau B2</div>
+            <div class="dots"><div class="d on"></div><div class="d on"></div><div class="d on"></div><div class="d on"></div><div class="d"></div></div>
+            <div class="cert">Certifié Rosetta Stone</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p><strong>Imad El Bouaisi</strong> — Spécialiste SIG & Data Analyst Géographique</p>
+  <p>Ben Guerir, Marrakech &nbsp;·&nbsp; <a href="mailto:ielbouaisi@gmail.com">ielbouaisi@gmail.com</a> &nbsp;·&nbsp; +212 6 34 33 84 74</p>
+  <p style="margin-top:16px;font-size:.7rem;color:#2a2a2a;">Portfolio Professionnel · 2025</p>
+</footer>
+
+<script>
+function fm(cat,btn){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.mc').forEach(c=>{
+    c.classList.toggle('hide', cat!=='all' && !(c.dataset.c||'').includes(cat));
+  });
+}
+</script>
+</body>
+</html>
